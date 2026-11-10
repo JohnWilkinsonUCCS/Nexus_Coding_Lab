@@ -8,7 +8,10 @@ Pinned upstream: 75a8d145aa5bc0c92725197c0e4e9883491c542f.
 Interpreter/version, command, actual output. Expected starter: four passes, four failures.
 
 ## Our design decision
-Audit owner and interface; ordering; one credible alternative; accepted benefit/cost.
+Owner:
+Call that Records the Audit entry:
+Whan is the audit recorded relative to the public event/publication.
+What cost is introduced:
 
 ## Actual changes
 Changed files/functions. What is implemented versus still proposed?

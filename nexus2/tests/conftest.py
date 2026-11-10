@@ -10,11 +10,16 @@ from northstar.notifications import (
 from northstar.policies import CustomerValidationPolicy
 from northstar.repository import InMemoryCustomerRepository
 from northstar.services import CustomerLifecycleService, CustomerRegistrationService
+from northstar.audit import Auditor
 
 
 @pytest.fixture
 def repository():
     return InMemoryCustomerRepository()
+
+@pytest.fixture
+def auditor():
+    return Auditor()
 
 
 @pytest.fixture
@@ -45,8 +50,8 @@ def registration(repository, auth, validation, event_bus):
 
 
 @pytest.fixture
-def lifecycle(repository, auth, event_bus):
-    return CustomerLifecycleService(repository, auth, event_bus)
+def lifecycle(repository, auth, event_bus, auditor):
+    return CustomerLifecycleService(repository, auth, event_bus, auditor)
 
 
 @pytest.fixture
