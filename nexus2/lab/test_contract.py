@@ -1,12 +1,21 @@
 """New teaching requirements, not original repository tests."""
+from pathlib import Path
+import tempfile
 import unittest
 from adapter import build, audit_records
 from northstar.auth import Actor
+import northstar.audit as audit
 from northstar.errors import AuthorizationError, CustomerNotFoundError
 
 SECRET = "PRIVATE-REASON-42"
 class Contract(unittest.TestCase):
-    def setUp(self): self.s = build()
+    def setUp(self):
+        self.audit_dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.audit_dir.cleanup)
+        self.addCleanup(setattr, audit, "AUDIT_FILE", audit.AUDIT_FILE)
+        audit.AUDIT_FILE = str(Path(self.audit_dir.name) / "audit.json")
+        Path(audit.AUDIT_FILE).touch()
+        self.s = build()
     def command(self, role="manager", reason=SECRET, customer_id="c1"):
         return self.s.lifecycle.deactivate(Actor("u-review", role), customer_id, reason)
     def test_01_reason_stays_out_of_public_event(self):
